@@ -1,0 +1,13 @@
+services:
+  p:
+    build:
+      context: .
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    image: p-language:latest
+    working_dir: /workspace
+    volumes:
+      - .:/workspace
+    stdin_open: true
+    tty: true
