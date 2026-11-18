@@ -1,9 +1,0 @@
-<Project>
-  <ProjectName>ManufacturingCell</ProjectName>
-  <InputFiles>
-    <PFile>../Common/</PFile>
-    <PFile>./PSrc/</PFile>
-    <PFile>./PTst/</PFile>
-  </InputFiles>
-  <OutputDir>./PGenerated/</OutputDir>
-</Project>

@@ -8,8 +8,11 @@ Coursework in the [P language](https://p-org.github.io/P/) (state-machine modeli
 distributed/concurrent systems), plus graduate projects that apply P and **PObserve** (P's runtime log
 monitor) to verify norm-based regulation in multi-agent systems. Two independent pieces:
 
-- `P-Tutorial/` — a from-zero tutorial (`ClientServer.p`, `LockServer.p`), also published as a browsable page
-  at `docs/index.html` (GitHub Pages).
+- `P-Tutorial/` — a from-zero tutorial (`ClientServer.p`, `LockServer.p`), published as a browsable page
+  at `docs/index.html` (GitHub Pages). **Not present in the current working tree** — it survives only in the
+  sibling snapshot `../P-Language old/`. For canonical examples use `p-source/P/Tutorial/`, which has nine
+  full `PSrc`/`PSpec`/`PTst` projects (ClientServer through Raft); see
+  `.claude/skills/p-project/references/examples-index.md`.
 - `Projects/ProjectRobot2026/` — the active graduate project: a mobile robot fleet crossing a shared corridor,
   with distributed admission control and centralized adaptation/sanctioning. `Projects/ProjectManufacturingCell2026/`
   is the sibling project (same architecture, a manufacturing cell instead of a corridor); check `git status`/`ls`
@@ -23,8 +26,8 @@ Each project folder is a **self-contained P solution** — always `cd` into it b
 
 ## Commands
 
-From inside `P-Tutorial/` or `Projects/ProjectRobot2026/MobileRobots/` (same pattern for the manufacturing-cell
-equivalent):
+From inside a project folder — `Projects/ProjectRobot2026/MobileRobots/`, any `p-source/P/Tutorial/*/`, or
+the manufacturing-cell equivalent:
 
 ```bash
 p compile                              # builds PGenerated/ from the .pproj's InputFiles
@@ -34,9 +37,11 @@ p check -tc <testcase> --replay <seed> # step through a specific counterexample
 p compile --mode pobserve              # generate the PObserve Java parser from the same monitors
 ```
 
-Requires .NET SDK **8.0** exactly and Java 11+ (`dotnet tool install --global P`). `PGenerated/` and
-`PCheckerOutput/` are build output, gitignored, regenerated every run — never hand-edit or commit them (an
-exception: a `.sci`/trace file worth preserving as documented evidence, as under `reviews/*/evidence/`).
+Requires .NET SDK **8.0** exactly and Java 11+ (`dotnet tool install --global P`) — on this machine none of it
+is installed on the host, it all lives in the Docker image, so read *Containerized toolchain* below before
+running any `p` command. `PGenerated/` and `PCheckerOutput/` are build output, gitignored, regenerated every
+run — never hand-edit or commit them (an exception: a `.sci`/trace file worth preserving as documented
+evidence, as under `reviews/*/evidence/`).
 
 Real test case names and required schedule counts live in each project's `PTst/TestScript.p` and
 `INSTRUCTIONS.md`/`ASSIGNMENT.md` — check those before inventing a command. For `ProjectRobot2026`:
@@ -71,6 +76,67 @@ python3 tools/simulate_logs.py --scenario fleet --policy naive --seed 2 --out fl
 
 `--check` runs a Python mirror of the P monitors over the generated log — useful for a quick sanity check, but
 it is **not** PObserve; don't cite it as a PObserve result.
+
+### Containerized toolchain and the PeasyAI MCP server
+
+The host has **no** P toolchain — no .NET SDK, no `p` on `PATH`. Everything runs in `p-language:latest`, built
+from `Dockerfile`/`docker-compose.yml`. A bare `p compile` in a host shell fails with `command not found`; run
+it in the container instead:
+
+```bash
+docker compose run --rm p bash                      # shell with p, dotnet, java, peasyai-mcp
+docker compose run --rm p bash -lc 'cd Projects/ProjectRobot2026/MobileRobots && p compile'
+docker compose build                                # after editing the Dockerfile
+```
+
+The repo is bind-mounted at **the same absolute path it has on the host** (`PROJECT_MOUNT` in the gitignored
+`.env`), so an absolute path means the same thing on both sides, and `PGenerated/`/`PCheckerOutput/` land in
+the working tree owned by you (the container user is uid/gid 1000). `gradle` is **not** in the image, so the
+PObserve Gradle build under `pobserve/` still can't run here — that gap is unchanged.
+
+PeasyAI (the `peasyai` MCP server, `peasy-ai-*` tools) runs in that same image through
+`tools/peasyai-mcp.sh`, registered in local scope in `~/.claude.json`. When using it:
+
+- Pass **absolute host paths** as `project_path`/`output_dir`; the identical mount path is what makes them
+  resolve. Never pass `/workspace`.
+- `peasy-ai-compile`, `peasy-ai-check` and `peasy-ai-fix-*` shell out to the real `p` in the container, so
+  their output *is* a genuine tool result — but the evidence discipline below still applies: carry the `-s`
+  schedule count, and say that a result came from PeasyAI rather than from a hand-run `p check`.
+- The generation and RAG tools call **PeasyAI's own configured LLM** (`~/.peasyai/settings.json`, mounted to
+  `/home/dev/.peasyai`), not this session's model, and are billed separately. Treat generated P code as an
+  unreviewed draft: compile and check it before it counts as part of the project.
+- `docker compose run --rm p peasyai-mcp config` verifies credentials loaded; `... peasyai-mcp init` creates
+  `settings.json`. Edits to the MCP registration only take effect after a Claude Code restart.
+
+### P authoring skills (no API key needed)
+
+PeasyAI needs an LLM API key, so the `peasyai` MCP server is unavailable without one. Its P language
+knowledge has been lifted into four Claude Code skills under `.claude/skills/`, which Claude Code runs on
+its own model — no key, no second LLM, nothing billed separately. Prefer these; they are the normal path.
+
+| Skill | Use for |
+|---|---|
+| `p-language` | P syntax, semantics and idioms. Reading, writing or reviewing any `.p` file |
+| `p-project` | Scaffolding a project, or building a model from a design document |
+| `p-verify` | `p compile` / `p check` through the container, and reading checker output |
+| `p-debug` | Fixing compile errors and PChecker counterexamples |
+
+Two things in there are useful directly:
+
+```bash
+# Static analysis of P code: 13 validators, stdlib-only, no API key.
+python3 -I .claude/skills/p-language/scripts/validate_p.py FILE.p --project PROJECT_DIR
+
+# Run p in the container without retyping the docker invocation.
+.claude/skills/p-verify/scripts/pdock.sh <dir-with-the-.pproj> check -tc tcFleetTwoPhase -s 10000
+```
+
+For the shared-`Common/` layout, `--project` takes the directory *above* the `.pproj`
+(`Projects/ProjectRobot2026`), so `../Common/*.p` is in scope.
+
+Generated P code is still an unreviewed draft: compile and check it before it counts, and carry the `-s`
+count with any result. The skills restate that discipline, but it binds regardless of which tool wrote
+the code.
 
 ## Architecture (ProjectRobot2026, mirrored by ProjectManufacturingCell2026)
 

@@ -5,13 +5,23 @@ ENV DEBIAN_FRONTEND=noninteractive \
     DOTNET_NOLOGO=1
 
 # .NET SDK 8.0 (Microsoft feed), Java runtime (>= 11), python3 for tools/simulate_logs.py
+# and for the PeasyAI MCP server (needs >= 3.10; Ubuntu 22.04 ships 3.10).
 RUN apt-get update \
- && apt-get install -y --no-install-recommends ca-certificates wget git python3 default-jre \
+ && apt-get install -y --no-install-recommends ca-certificates wget git python3 python3-venv default-jre \
  && wget -q https://packages.microsoft.com/config/ubuntu/22.04/packages-microsoft-prod.deb -O /tmp/ms.deb \
  && dpkg -i /tmp/ms.deb && rm /tmp/ms.deb \
  && apt-get update \
  && apt-get install -y --no-install-recommends dotnet-sdk-8.0 \
  && rm -rf /var/lib/apt/lists/*
+
+# PeasyAI MCP server, in its own venv so it never touches the system python.
+# Installed as root into /opt so the image stays read-only for the dev user.
+ARG PEASYAI_VERSION=1.0.0
+RUN python3 -m venv /opt/peasyai \
+ && /opt/peasyai/bin/pip install --no-cache-dir --upgrade pip \
+ && /opt/peasyai/bin/pip install --no-cache-dir \
+      https://github.com/p-org/P/releases/download/peasyai-v${PEASYAI_VERSION}/peasyai_mcp-${PEASYAI_VERSION}-py3-none-any.whl \
+ && ln -s /opt/peasyai/bin/peasyai-mcp /usr/local/bin/peasyai-mcp
 
 # Non-root user matching the host user, so PGenerated/ and PCheckerOutput/
 # written into the bind mount are owned by you, not root.

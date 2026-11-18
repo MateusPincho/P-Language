@@ -5,9 +5,15 @@ services:
       args:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
+        PEASYAI_VERSION: ${PEASYAI_VERSION:-1.0.0}
     image: p-language:latest
-    working_dir: /workspace
+    # PROJECT_MOUNT should be the repo's absolute path on the host, so that paths
+    # are identical inside and outside the container (PeasyAI's MCP tools take
+    # absolute project paths). Set it in .env; see README.
+    working_dir: ${PROJECT_MOUNT:-/workspace}
     volumes:
-      - .:/workspace
+      - .:${PROJECT_MOUNT:-/workspace}
+      # PeasyAI's LLM credentials (~/.peasyai/settings.json), kept out of the image.
+      - ${PEASYAI_CONFIG_DIR:-./.peasyai}:/home/dev/.peasyai
     stdin_open: true
     tty: true
