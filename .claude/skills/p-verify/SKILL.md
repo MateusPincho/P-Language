@@ -27,19 +27,16 @@ builds the image on first use.
 Or go direct:
 
 ```bash
-docker compose run --rm p bash -lc 'cd /abs/path/to/project && p compile'
+docker compose run --rm p bash -lc 'cd Projects/<Project>/<dir-with-the-.pproj> && p compile'
 ```
 
-Three things make that work, and all three are easy to get wrong:
+Two things make that work:
 
-- **Absolute host paths.** The repo is bind-mounted at the same absolute path it has on the host
-  (`PROJECT_MOUNT` in the gitignored `.env`, here `/home/mateus/Projects/P-Language`), so a path means the
-  same thing on both sides. Never pass `/workspace`.
-- **`bash -lc`, a login shell.** `p` lives at `/home/dev/.dotnet/tools/p` and only a login shell has it on
-  `PATH`.
-- **`cd` into the `.pproj` directory first.** `p` searches the current folder for the project file.
-  `Projects/ProjectRobot2026/PGenerated/` is leftover output from a compile run one level too high — that
-  is the failure mode.
+- **Paths relative to the repo root.** The repo is bind-mounted at `/workspace` and the container starts
+  there. A host absolute path (`/home/...`) does not exist inside the container; the wrapper translates
+  one for you, a direct `docker compose run` does not.
+- **`cd` into the `.pproj` directory first.** `p` searches the current folder for the project file. A
+  stray `PGenerated/` one level above a project is leftover output from compiling one level too high.
 
 The container runs as uid/gid 1000, so `PGenerated/` and `PCheckerOutput/` land in the working tree owned
 by you. Both are gitignored build output, regenerated every run. Never hand-edit or commit them. The one
@@ -100,8 +97,6 @@ usual.
 - **"No bug found" always travels with its schedule count.** `-s 200` and `-s 100000` are not the same
   evidence. Carry the number every time the result is cited.
 - **"No bug found in N schedules" is a result. "The design is correct" is not**, unless N is justified.
-- Say when a result came from PeasyAI rather than a hand-run `p check`. PeasyAI's compile/check tools do
-  shell out to the real `p`, so their output is genuine — but the provenance still belongs in the report.
 - A test that passes because nothing ever happened proves nothing. Check the schedule and timeline counts
   in the summary, not just "Found 0 bugs."
 
