@@ -77,42 +77,28 @@ python3 tools/simulate_logs.py --scenario fleet --policy naive --seed 2 --out fl
 `--check` runs a Python mirror of the P monitors over the generated log — useful for a quick sanity check, but
 it is **not** PObserve; don't cite it as a PObserve result.
 
-### Containerized toolchain and the PeasyAI MCP server
+### Containerized toolchain
 
 The host has **no** P toolchain — no .NET SDK, no `p` on `PATH`. Everything runs in `p-language:latest`, built
 from `Dockerfile`/`docker-compose.yml`. A bare `p compile` in a host shell fails with `command not found`; run
 it in the container instead:
 
 ```bash
-docker compose run --rm p bash                      # shell with p, dotnet, java, peasyai-mcp
-docker compose run --rm p bash -lc 'cd Projects/ProjectRobot2026/MobileRobots && p compile'
+docker compose run --rm p bash                      # shell with p, dotnet, java
+docker compose run --rm p bash -lc 'cd Projects/WarehouseFleet2026/WarehouseFleet && p compile'
 docker compose build                                # after editing the Dockerfile
 ```
 
-The repo is bind-mounted at **the same absolute path it has on the host** (`PROJECT_MOUNT` in the gitignored
-`.env`), so an absolute path means the same thing on both sides, and `PGenerated/`/`PCheckerOutput/` land in
-the working tree owned by you (the container user is uid/gid 1000). `gradle` is **not** in the image, so the
-PObserve Gradle build under `pobserve/` still can't run here — that gap is unchanged.
+The repo is bind-mounted at `/workspace` and the container starts there, so pass paths **relative to the repo
+root** inside the container; a host absolute path does not exist in it. `PGenerated/`/`PCheckerOutput/` land in
+the working tree owned by you (the container user is uid/gid 1000; override with
+`HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose build`). `gradle` is **not** in the image, and Java is an
+11 runtime without a compiler, so a PObserve Gradle build can't run here.
 
-PeasyAI (the `peasyai` MCP server, `peasy-ai-*` tools) runs in that same image through
-`tools/peasyai-mcp.sh`, registered in local scope in `~/.claude.json`. When using it:
+### P authoring skills
 
-- Pass **absolute host paths** as `project_path`/`output_dir`; the identical mount path is what makes them
-  resolve. Never pass `/workspace`.
-- `peasy-ai-compile`, `peasy-ai-check` and `peasy-ai-fix-*` shell out to the real `p` in the container, so
-  their output *is* a genuine tool result — but the evidence discipline below still applies: carry the `-s`
-  schedule count, and say that a result came from PeasyAI rather than from a hand-run `p check`.
-- The generation and RAG tools call **PeasyAI's own configured LLM** (`~/.peasyai/settings.json`, mounted to
-  `/home/dev/.peasyai`), not this session's model, and are billed separately. Treat generated P code as an
-  unreviewed draft: compile and check it before it counts as part of the project.
-- `docker compose run --rm p peasyai-mcp config` verifies credentials loaded; `... peasyai-mcp init` creates
-  `settings.json`. Edits to the MCP registration only take effect after a Claude Code restart.
-
-### P authoring skills (no API key needed)
-
-PeasyAI needs an LLM API key, so the `peasyai` MCP server is unavailable without one. Its P language
-knowledge has been lifted into four Claude Code skills under `.claude/skills/`, which Claude Code runs on
-its own model — no key, no second LLM, nothing billed separately. Prefer these; they are the normal path.
+P language knowledge lives in four Claude Code skills under `.claude/skills/`. Prefer these; they are the
+normal path.
 
 | Skill | Use for |
 |---|---|
@@ -134,9 +120,8 @@ python3 -I .claude/skills/p-language/scripts/validate_p.py FILE.p --project PROJ
 For the shared-`Common/` layout, `--project` takes the directory *above* the `.pproj`
 (`Projects/ProjectRobot2026`), so `../Common/*.p` is in scope.
 
-Generated P code is still an unreviewed draft: compile and check it before it counts, and carry the `-s`
-count with any result. The skills restate that discipline, but it binds regardless of which tool wrote
-the code.
+Generated P code is an unreviewed draft: compile and check it before it counts, and carry the `-s`
+count with any result. The skills restate that discipline, but it binds regardless of who wrote the code.
 
 ## Architecture (ProjectRobot2026, mirrored by ProjectManufacturingCell2026)
 

@@ -14,6 +14,3 @@ obj/
 Thumbs.db
 .vscode/
 
-# ambiente local do docker / credenciais do PeasyAI
-.env
-.peasyai/
