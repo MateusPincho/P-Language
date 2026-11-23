@@ -1,7 +1,0 @@
-{
-  "name": "p-language-student-faqs",
-  "private": true,
-  "scripts": {"build": "node build.cjs"},
-  "engines": {"node": ">=20"},
-  "dependencies": {"marked": "17.0.5"}
-}
