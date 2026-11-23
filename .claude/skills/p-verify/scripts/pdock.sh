@@ -1,10 +1,9 @@
 #!/usr/bin/env bash
 # Run a `p` command against a P project inside the p-language:latest container.
 #
-# The host has no P toolchain. The repo is bind-mounted at the SAME absolute
-# path it has on the host (PROJECT_MOUNT in the gitignored .env), so a path
-# means the same thing inside and out -- which is what lets this script take an
-# ordinary host path and cd to it in the container.
+# The host has no P toolchain. The repo is bind-mounted at /workspace in the
+# container, so this script takes an ordinary host path, checks it is inside
+# the repo, and cds to the matching /workspace path in the container.
 #
 # Usage:
 #   pdock.sh <project-dir> compile
@@ -54,7 +53,9 @@ if ! docker image inspect "$IMAGE" >/dev/null 2>&1; then
   docker compose --project-directory "$REPO_DIR" build >&2
 fi
 
+CONTAINER_PROJECT="/workspace${ABS_PROJECT#"$REPO_DIR"}"
+
 # `p` lives at /home/dev/.dotnet/tools/p, added to PATH for the dev user, so the
 # shell must be a login shell for PATH to be set.
 exec docker compose --project-directory "$REPO_DIR" run --rm -T p \
-  bash -lc 'cd "$1" && shift && p "$@"' _ "$ABS_PROJECT" "$@"
+  bash -lc 'cd "$1" && shift && p "$@"' _ "$CONTAINER_PROJECT" "$@"
