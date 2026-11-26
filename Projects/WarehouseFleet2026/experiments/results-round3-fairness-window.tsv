@@ -1,0 +1,8 @@
+2026-11-23	tcE3FairnessTraffic	1000	1	1	2	2	0.2025603	Assertion Failed: PSpec/Fairness.p:90:5 F1 (traffic-caused): task 2 was sanctioned after a 2 delay caused by the other robot
+2026-11-23	tcE6FairnessTraffic	1000	1	0	1000	244	11.637409	
+2026-11-23	tcE6FairnessRegulation	1000	1	1	1	1	0.1845519	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 1 delay imposed by the regulation
+2026-11-23	tcE7SuspendOnly	1000	1	1	4	4	0.3022034	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 1 delay imposed by the regulation
+2026-11-23	tcE7SuspendExcuseShort	1000	1	1	458	84	8.8576606	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 3 delay imposed by the regulation
+2026-11-23	tcE7SuspendExcuseRandom	1000	1	1	10	10	0.460507	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 3 delay imposed by the regulation
+2026-11-23	tcE7Traffic	1000	1	1	3	3	0.2410697	Assertion Failed: PSpec/Fairness.p:90:5 F1 (traffic-caused): task 1 was sanctioned after a 2 delay caused by the other robot
+2026-11-23	tcE3FairnessRegulation	1000	1	1	1	1	0.1623752	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 1 delay imposed by the regulation

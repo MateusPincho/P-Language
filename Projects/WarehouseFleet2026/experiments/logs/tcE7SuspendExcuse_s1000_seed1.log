@@ -1,0 +1,85 @@
+ Container p-language-p-run-871b5f1e0902 Creating 
+ Container p-language-p-run-871b5f1e0902 Created 
+.. Searching for a P project file *.pproj locally in the current folder
+.. Found P project file: /workspace/Projects/WarehouseFleet2026/WarehouseFleet/WarehouseFleet.pproj
+.. Searching for a P compiled file locally in folder ./PGenerated/
+.. Found a P compiled file: ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Checking ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Running test cases with prefix 'tcE7SuspendExcuse':
+tcE7SuspendExcuse
+tcE7SuspendExcuseRandom
+.. Test case :: tcE7SuspendExcuse
+... Checker is using 'random' strategy (seed:1).
+..... Schedule #1
+..... Schedule #2
+..... Schedule #3
+..... Schedule #4
+..... Schedule #5
+..... Schedule #6
+..... Schedule #7
+..... Schedule #8
+..... Schedule #9
+..... Schedule #10
+..... Schedule #20
+..... Schedule #30
+..... Schedule #40
+..... Schedule #50
+..... Schedule #60
+..... Schedule #70
+..... Schedule #80
+..... Schedule #90
+..... Schedule #100
+..... Schedule #200
+..... Schedule #300
+..... Schedule #400
+Checker found a bug.
+... Emitting traces:
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_0_0.txt
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_0_0.trace.json
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_0_0.schedule
+... Elapsed 9.12 sec and used 0.01 GB.
+... Emitting coverage report:
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet.coverage.txt
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet.sci
+... Checking statistics:
+..... Found 1 bug.
+... Scheduling statistics:
+..... Explored 458 schedules
+..... Explored 84 timelines
+..... Found 0.22% buggy schedules.
+..... Number of scheduling points in terminating schedules: 106 (min), 227 (avg), 323 (max).
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_pchecker_summary.txt
+... Elapsed 9.1763108 sec.
+.. Test case :: tcE7SuspendExcuseRandom
+... Checker is using 'random' strategy (seed:1).
+..... Schedule #1
+..... Schedule #2
+..... Schedule #3
+..... Schedule #4
+..... Schedule #5
+..... Schedule #6
+..... Schedule #7
+..... Schedule #8
+..... Schedule #9
+..... Schedule #10
+Checker found a bug.
+... Emitting traces:
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_0_1.txt
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_0_1.trace.json
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_0_1.schedule
+... Elapsed 0.16 sec and used 0.01 GB.
+... Emitting coverage report:
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet.coverage.txt
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet.sci
+... Checking statistics:
+..... Found 1 bug.
+... Scheduling statistics:
+..... Explored 10 schedules
+..... Explored 10 timelines
+..... Found 10.00% buggy schedules.
+..... Number of scheduling points in terminating schedules: 131 (min), 204 (avg), 238 (max).
+..... Writing PCheckerOutput/tcE7SuspendExcuse_s1000_seed1/BugFinding/WarehouseFleet_pchecker_summary.txt
+... Elapsed 0.1642139 sec.
+. Done
+~~ [PTool]: Thanks for using P! ~~
+

@@ -9,24 +9,37 @@ picker (N5, N6, N8).
   `docs/Multi-Robot Fleet in a Warehouse update.pdf`. It keeps the PDF's claims apart from our modeling
   decisions (§7).
 - **Model:** [`WarehouseFleet/`](WarehouseFleet/), a standalone P project.
-- **Evidence:** [`evidence/`](evidence/), counterexample traces and replayable schedules for the two
-  tests whose failure is intended.
+- **Experiments:** [`EXPERIMENTS.md`](EXPERIMENTS.md), the assignment's experiments E0–E10 mapped to
+  this model: one section per experiment, with its test cases, commands, predictions and results.
+- **Evidence:** [`evidence/`](evidence/), counterexample traces and replayable schedules for every test
+  whose failure is intended.
 
 ## Layout
 
 ```
 WarehouseFleet2026/
 ├── SPECIFICATION.md
+├── EXPERIMENTS.md                 E0-E10: test cases, predictions, results
 ├── README.md
 ├── evidence/                      saved traces (PCheckerOutput/ is gitignored)
+├── experiments/                   scripts and raw results of the experiments
+│   ├── run_tests.sh               p check for a list of test cases, logs a line per run
+│   ├── run_mutants.py             E0: one mutant per monitor, on a temporary copy
+│   ├── run_scale.sh               E8: the model with 4 zones, on a temporary copy
+│   ├── results.tsv  mutants.tsv   one line per run (earlier rounds kept alongside)
+│   └── logs/                      the checker's output for every run
 └── WarehouseFleet/                <- run p from here
     ├── WarehouseFleet.pproj
     ├── PSrc/   Enums_Types_Events.p  Robot.p  ZoneController.p  ObligationManager.p
     │           AdaptationCoordinator.p  HumanPicker.p  Clock.p
+    │           DirectionGuard.p (E6 only)
     ├── PSpec/  Safety.p (properties 1-3, NoDoubleOutcome)
     │           Liveness.p (EveryTaskResolved, EveryRobotSettles, HumanEventuallyEnters)
     │           Cover.p (property 4, witness monitor)
-    └── PTst/   TestDriver.p  TestScript.p
+    │           NormMonitors.p (N2, N3, N7, N8)
+    │           Fairness.p (E3: regulation- vs traffic-caused sanctions)
+    │           ExperimentMonitors.p (E6, E9, E10)
+    └── PTst/   TestDriver.p  TestScript.p (24 test cases)
 ```
 
 ## 1. Set up the P toolchain in Docker (once)
@@ -93,7 +106,16 @@ Compile again after every edit to a `.p` file: `p check` runs the last compiled 
 
 ### 3.2 Run each test case
 
-`-tc` names the test case and `-s` the number of schedules. These are the commands used for every
+`TestScript.p` has 24 test cases. The five below are the original ones (the PDF's properties). The
+other 19 belong to the assignment's experiments, and each is described, with its command, in
+[`EXPERIMENTS.md`](EXPERIMENTS.md) §4. `p check --list-tests` lists them all.
+
+**`-tc` matches test names by prefix.** `p check -tc tcE9Abort` would run every test whose name starts
+with `tcE9Abort`. The names in `TestScript.p` are chosen so that none is a prefix of another; keep it
+that way when you add a test.
+
+`-tc` names the test case and `-s` the number of schedules. Add `--seed 1` to reproduce the final round
+exactly (*Status*); without it, each run picks its own seed. These are the commands used for every
 result in *Status*. Each count was run once: first `-s 1000`, then `-s 10000`, then `-s 100000` for the
 three tests expected to pass. The `-o` folder keeps each run's output separate, which matters when
 several tests run in parallel; without `-o`, everything goes to `PCheckerOutput/` and the next run
@@ -102,7 +124,8 @@ overwrites it.
 #### Test case `tcHeadOnV1`: head-on conflict under V1, no human
 
 R1 (A → B, priority 4) and R2 (B → A, priority 8), deadlines 15, COOLDOWN 2. Exercises N1–N4.
-Monitors: `ZoneMutualExclusion`, `SanctionOnlyAfterExpiry`, `NoDoubleOutcome`, `EveryTaskResolved`,
+Monitors: `ZoneMutualExclusion`, `SanctionOnlyAfterExpiry`, `NoDoubleOutcome`, `PriorityRespected`,
+`EmptyRobotHasPriorityZero`, `OutrankedOccupantPreempted`, `DeadlinesKeepRunning`, `EveryTaskResolved`,
 `EveryRobotSettles`.
 
 ```bash
@@ -116,7 +139,8 @@ Expected: `Found 0 bugs.`
 #### Test case `tcHumanAdaptation`: the same trip with the human picker (V1 → V2 → V1)
 
 Same robots and tasks. The human asks for Zone 1 after 0–10 steps and stays 1–10 steps. Exercises
-N1–N8. Monitors: the five above plus `NoRobotWithHuman` and `HumanEventuallyEnters`.
+N1–N8. Monitors: the nine above plus `NoRobotWithHuman`, `HumanEventuallyEnters` and
+`V1EventuallyRestored`.
 
 ```bash
 p check -tc tcHumanAdaptation -s 1000
@@ -129,7 +153,7 @@ Expected: `Found 0 bugs.`
 #### Test case `tcRandomTasks`: random tasks, with the human picker
 
 Priority 1–10, deadline 1–15 and initial infractions 0–1 for each robot, all chosen by the checker,
-plus the human picker. Same seven monitors as `tcHumanAdaptation`.
+plus the human picker. Same twelve monitors as `tcHumanAdaptation`.
 
 ```bash
 p check -tc tcRandomTasks -s 1000
@@ -247,41 +271,42 @@ matching `test` line in `PTst/TestScript.p` with the monitors you want checked. 
 
 ### 3.7 Break a norm on purpose
 
-This is the most direct way to see what the tests can and cannot catch. Copy the model, break one norm
-in the copy, and run the checker. If the broken model still passes, that norm is unchecked.
-
-These are the commands used for the three broken-norm runs in *Status → Known gaps*. Each one is
-checked against test case `tcRandomTasks`. Start from `Projects/WarehouseFleet2026/` inside the
-container. The copy must stay inside the repo, or the container can't see it.
+This is the most direct way to see what the tests can and cannot catch: copy the model, break one norm
+in the copy, and run the checker. If the broken model still passes, that norm is unchecked. Experiment
+E0 does exactly this for every monitor, with a script. From `Projects/WarehouseFleet2026/` on the
+host:
 
 ```bash
-# M1: reverse N2 (the lower priority wins)
-cp -r WarehouseFleet .mutant && cd .mutant && rm -rf PGenerated PCheckerOutput
-sed -i 's/return a.priority > b.priority;/return a.priority < b.priority;/' PSrc/ZoneController.p
-p compile
-p check -tc tcRandomTasks -s 3000        # result: Found 0 bugs  -> N2 not caught
-cd .. && rm -rf .mutant
-
-# M2: remove N3 (never preempt the occupant)
-cp -r WarehouseFleet .mutant && cd .mutant && rm -rf PGenerated PCheckerOutput
-sed -i 's/if (!preempting \&\& Wins(req, occ)) {              \/\/ N3/if (false) {/' PSrc/ZoneController.p
-p compile
-p check -tc tcRandomTasks -s 3000        # result: Found 0 bugs  -> N3 not caught
-cd .. && rm -rf .mutant
-
-# M3: remove N5 (Zone 1 admits robots under V2)
-cp -r WarehouseFleet .mutant && cd .mutant && rm -rf PGenerated PCheckerOutput
-sed -i 's/    if (Locked()) {                                   \/\/ N5/    if (false) {/' PSrc/ZoneController.p
-p compile
-p check -tc tcRandomTasks -s 3000        # result: Found 1 bug (NoRobotWithHuman) -> N5 caught
-cd .. && rm -rf .mutant
+python3 -I experiments/run_mutants.py 10000 1            # all 15 mutants, seed 1
+python3 -I experiments/run_mutants.py 10000 1 M08_N2     # one mutant: N2 reversed
 ```
 
-After each `sed`, check that it actually changed the file (`grep -n "if (false)" PSrc/ZoneController.p`,
-or the `a.priority <` line for M1). A `sed` that matches nothing leaves the model unchanged, and the run
-proves nothing.
+Each mutant is an exact text replacement listed at the top of `run_mutants.py`. The script applies it
+to a temporary copy in `.mutants/`, adds a probe test that attaches only the target monitor, then runs
+`p compile` and `p check -tc tcProbe -s <N> --seed <seed>` in the container. It records `KILLED`,
+`SURVIVED` or `OTHER-BUG` in `experiments/mutants.tsv`. Results are in `EXPERIMENTS.md`, E0: all 15
+mutants are killed.
 
-What this showed on 2026-11-23 is in *Status → Known gaps*.
+To try a mutation by hand, the same steps work inside the container. Start from
+`Projects/WarehouseFleet2026/`, and keep the copy inside the repo so the container can see it
+(`.mutants/` is gitignored):
+
+```bash
+mkdir -p .mutants && cp -r WarehouseFleet .mutants/handrun && cd .mutants/handrun
+rm -rf PGenerated PCheckerOutput
+sed -i 's/return a.priority > b.priority;/return a.priority < b.priority;/' PSrc/ZoneController.p
+grep -n "a.priority < b.priority" PSrc/ZoneController.p   # check the sed really changed the file
+p compile
+p check -tc tcRandomTasks -s 3000 --seed 1     # Found 1 bug, at schedule 2
+cd ../.. && rm -rf .mutants/handrun
+```
+
+On 2026-11-24 this run stopped at schedule 2 with "N3 violated: robot 1 (P=9) outranks robot 2 (P=7) in
+zone 2, but no retreat was ordered". The first monitor to fire is the N3 one, because reversing the
+controller's comparison also reverses its preemption decisions. E0's probe for this mutant attaches only
+`PriorityRespected` and shows the N2 monitor catches it as well. Before the N2, N3, N7 and N8 monitors
+were added (2026-11-23), this mutant and an N3 mutant passed 3,000 schedules with 0 bugs. That gap is
+why those monitors exist.
 
 ## 4. PObserve (runtime monitoring of logs)
 
@@ -379,63 +404,66 @@ report false alarms.
 
 ## Status
 
-Everything below was run on 2026-11-18 with **P 3.1.0.0** in `p-language:latest`, from
-`WarehouseFleet/`, with the per-test-case `p check` commands listed in §3.2. "No bug" means no bug in the stated number of schedules
-under PChecker's default random scheduler. It is not a proof of correctness.
+**Final round: 2026-11-24, P 3.1.0.0** in `p-language:latest`, from `WarehouseFleet/`, seed 1, with the
+commands of §3.2 and `EXPERIMENTS.md`. "0 bugs" means none in the stated number of schedules under
+PChecker's default random strategy. It is evidence, not a proof of correctness.
 
-| Test | Monitors | Schedules | Result | Distinct timelines | Time |
-|---|---|---|---|---|---|
-| `tcHeadOnV1` | 1, 3, NoDoubleOutcome, EveryTaskResolved, EveryRobotSettles | 100,000 | **0 bugs** | 33 | 555 s |
-| `tcHumanAdaptation` | 1, 2, 3, NoDoubleOutcome, all 3 liveness | 100,000 | **0 bugs** | 558 | 1684 s |
-| `tcRandomTasks` | 1, 2, 3, NoDoubleOutcome, all 3 liveness | 100,000 | **0 bugs** | 2947 | 1648 s |
-| `tcNaiveAdaptation` | 1, 2 | 10,000 | **1 bug, intended**: `NoRobotWithHuman` (property 2) | — | <1 s |
-| `tcCoverSanctionInV2` | 4 | 10,000 | **1 bug, intended**: `SanctionDuringV2` witness (property 4 is reachable) | — | <1 s |
+### The final model (E1)
 
-The same five outcomes were also observed at `-s 1000` and at `-s 10000` (the three "hold" tests: 0 bugs
-at 10,000 schedules each, 20 / 303 / 1155 distinct timelines).
+All twelve baseline monitors are attached: properties 1–3, `NoDoubleOutcome`, N2 ×2, N3, N7, N8 and three
+liveness monitors (property 2 and the human/N8 monitors only where the human is present).
 
-**The passing tests are not vacuous.** Every schedule terminated: the clock stopped because both robots
-settled, so the liveness monitors were judged on complete runs. PChecker's event-coverage report
-(`PCheckerOutput/BugFinding/WarehouseFleet.coverage.txt`, at `-s 1000`) shows **100% event coverage for
-every machine** in `tcHumanAdaptation` and `tcRandomTasks`: preemption, side-bay retreat, withdrawal of
-stale requests, late arrival, sanction, cooldown, the empty return trip, the V2 lockout/evacuation and the
-V1 restore all occurred. `tcHeadOnV1` covers 81.1% (no human, so the coordinator and the V2 paths are
-absent by design; Robot 77.8%).
-
-**What the intended counterexamples show** (`evidence/`):
-
-- `tcNaiveAdaptation_s10000.trace.txt`: with a coordinator that admits the human right after broadcasting
-  V2, without waiting for controller 1's evacuation ack, robot 2 enters Zone 1 while the human is inside
-  (`PSpec/Safety.p:31`). At `-s 1000` the checker found the other variant: the human enters while R1 is
-  still in Zone 1 (`PSpec/Safety.p:43`). So the two-phase switch (ack only once Zone 1 is empty) is what
-  property 2 depends on, and the monitor is able to catch its absence.
-- `tcCoverSanctionInV2_s10000.trace.txt`: R1 is evacuated from Zone 1 to Bay 1 (N6), the human enters, and
-  R2's deadline expires while V2 is still active (N7), so R2 is sanctioned. This is the
-  obligation-vs-adaptation conflict of slide 13. The PDF classes it as a conflict, not a design flaw, so it
-  is checked for reachability only.
-
-Replay either one with
-`p check -tc <test case> --replay ../evidence/<test case>_s10000.schedule` (see §3.4).
-
-**Known gaps: norms the tests cannot catch** (run 2026-11-23, P 3.1.0.0). Each row is a copy of the
-model with one norm broken, checked with `tcRandomTasks`:
-
-| Broken norm | Change in `ZoneController.p` | Schedules | Result |
+| Test case | Command | Result | Distinct timelines |
 |---|---|---|---|
-| N2 reversed | lower priority wins | 3,000 | 0 bugs: **not caught** |
-| N3 removed | never preempt the occupant | 3,000 | 0 bugs: **not caught** |
-| N5 removed | Zone 1 admits robots under V2 | 2 | caught by `NoRobotWithHuman` |
+| `tcHeadOnV1` | `p check -tc tcHeadOnV1 -s 100000 --seed 1` | **0 bugs** | 30 |
+| `tcHumanAdaptation` | `p check -tc tcHumanAdaptation -s 100000 --seed 1` | **0 bugs** | 540 |
+| `tcRandomTasks` | `p check -tc tcRandomTasks -s 100000 --seed 1` | **0 bugs** | 2,962 |
 
-The PDF's four properties do not check priority (N2) or preemption (N3), so the passing results above
-say nothing about those two norms. N7 (deadlines keep running in V2) and N8 (V1 restored) have no
-safety monitor either; N7 is only shown reachable, by `tcCoverSanctionInV2`. Closing this needs one
-monitor per norm.
+The intended failures fail as intended:
+- `tcNaiveAdaptation`: `NoRobotWithHuman` fails at schedule 6.
+- `tcCoverSanctionInV2`: property 4 witnessed at schedule 1.
 
-**PObserve:** `p compile --mode pobserve` generated the Java monitors without errors on 2026-11-23.
-Nothing beyond that has been built or run (see §4.2 for what is missing).
+**Every monitor can fail (E0).** 15 mutants, one per monitor, are all killed at `-s 10000`; the other
+monitors fail on the final model by design. **Schedule count (spec 5.9).** Seeded design bugs are found
+within 1–17 schedules over seeds 1–10. Details are in `EXPERIMENTS.md` (E0 and calibration).
 
-**Not done:**
-- No PObserve build or run on logs, and there are no logs to run it on.
+**The passing tests are not vacuous.** Every schedule terminated with both robots settled, so the liveness
+monitors were judged on complete runs. In `tcHumanAdaptation` and `tcRandomTasks` (`-s 1000`, coverage
+report), every handler of the final model ran at least once. The overall event coverage is 86.3% because
+every handler that did not run belongs to an experiment switch:
+- E4: `eNormCommit`;
+- E5: `eCooldownOver` while travelling or done;
+- E6: `AwaitDirection`;
+- E7: the notices to the Fleet Manager;
+- E9: `eAdaptTimeout` and `eHumanAccessRefused`.
+
+### The experiments (E0–E10)
+
+All 24 test cases and 15 mutants were run. Every result matches its prediction except two:
+- `tcE6FairnessTraffic` (predicted to fail; 0 bugs at 10,000).
+- E8's "run time grows rapidly" (no bug in any size, but only modestly slower).
+
+The full table, the counterexample write-ups, and the problems found in the experimental setup itself
+(three monitor false alarms and `-tc` prefix matching, none in the model) are in
+[`EXPERIMENTS.md`](EXPERIMENTS.md). Raw records: `experiments/results.tsv`, `experiments/mutants.tsv`,
+`experiments/logs/`. Traces: `evidence/` (the two large liveness traces are gzipped).
+
+### History
+
+The 2026-11-18 round ran the five original tests with the original seven monitors: 0 bugs at 100,000
+schedules each for the three passing tests (33 / 558 / 2,947 timelines). That round found that reversing
+N2 or removing N3 went unnoticed (0 bugs at 3,000). The N2, N3, N7 and N8 monitors were added on
+2026-11-23 to close that gap (see E0).
+
+### PObserve
+
+`p compile --mode pobserve` generated the Java monitors without errors on 2026-11-23. Nothing beyond that
+has been built or run (see §4.2 for what is missing).
+
+### Not done
+
+- No PObserve build or run on logs, and there are no logs to run it on: the run-time part of the
+  assignment.
 - No exhaustive exploration: PChecker samples schedules. The state space is finite but was not
   enumerated.
 - `-s` counts above are what was run; no claim is made beyond them.

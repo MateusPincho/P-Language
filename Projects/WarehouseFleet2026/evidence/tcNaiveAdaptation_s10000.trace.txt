@@ -3,160 +3,165 @@
 <MonitorLog> PImplementation.ZoneMutualExclusion enters state 'Monitoring'.
 <CreateLog> PImplementation.NoRobotWithHuman was created.
 <MonitorLog> PImplementation.NoRobotWithHuman enters state 'Monitoring'.
-<CreateLog> TestNaiveAdaptation(1) was created by task '2'.
+<CreateLog> TestNaiveAdaptation(1) was created by task '338'.
 <StateLog> TestNaiveAdaptation(1) enters state 'Init'.
 <CreateLog> FleetScenario(2) was created by TestNaiveAdaptation(1).
 <StateLog> FleetScenario(2) enters state 'Init'.
 <CreateLog> ZoneController(3) was created by FleetScenario(2).
-<StateLog> ZoneController(3) enters state 'Init'.
-<GotoLog> ZoneController(3) is transitioning from state 'Init' to state 'PImplementation.ZoneController.Serving'.
-<StateLog> ZoneController(3) exits state 'Init'.
-<StateLog> ZoneController(3) enters state 'Serving'.
 <CreateLog> ZoneController(4) was created by FleetScenario(2).
-<StateLog> ZoneController(4) enters state 'Init'.
-<GotoLog> ZoneController(4) is transitioning from state 'Init' to state 'PImplementation.ZoneController.Serving'.
-<StateLog> ZoneController(4) exits state 'Init'.
-<StateLog> ZoneController(4) enters state 'Serving'.
 <CreateLog> ZoneController(5) was created by FleetScenario(2).
 <StateLog> ZoneController(5) enters state 'Init'.
 <GotoLog> ZoneController(5) is transitioning from state 'Init' to state 'PImplementation.ZoneController.Serving'.
 <StateLog> ZoneController(5) exits state 'Init'.
 <StateLog> ZoneController(5) enters state 'Serving'.
-<CreateLog> AdaptationCoordinator(6) was created by FleetScenario(2).
-<StateLog> AdaptationCoordinator(6) enters state 'Init'.
-<GotoLog> AdaptationCoordinator(6) is transitioning from state 'Init' to state 'PImplementation.AdaptationCoordinator.NormalV1'.
-<StateLog> AdaptationCoordinator(6) exits state 'Init'.
-<StateLog> AdaptationCoordinator(6) enters state 'NormalV1'.
+<CreateLog> Robot(6) was created by FleetScenario(2).
+<StateLog> Robot(6) enters state 'Init'.
+<GotoLog> Robot(6) is transitioning from state 'Init' to state 'PImplementation.Robot.AtStation'.
+<StateLog> Robot(6) exits state 'Init'.
+<StateLog> Robot(6) enters state 'AtStation'.
+<StateLog> ZoneController(4) enters state 'Init'.
+<GotoLog> ZoneController(4) is transitioning from state 'Init' to state 'PImplementation.ZoneController.Serving'.
+<StateLog> ZoneController(4) exits state 'Init'.
+<StateLog> ZoneController(4) enters state 'Serving'.
+<StateLog> ZoneController(3) enters state 'Init'.
+<GotoLog> ZoneController(3) is transitioning from state 'Init' to state 'PImplementation.ZoneController.Serving'.
+<StateLog> ZoneController(3) exits state 'Init'.
+<StateLog> ZoneController(3) enters state 'Serving'.
 <CreateLog> Robot(7) was created by FleetScenario(2).
+<CreateLog> ObligationManager(8) was created by FleetScenario(2).
+<CreateLog> AdaptationCoordinator(9) was created by FleetScenario(2).
 <StateLog> Robot(7) enters state 'Init'.
 <GotoLog> Robot(7) is transitioning from state 'Init' to state 'PImplementation.Robot.AtStation'.
 <StateLog> Robot(7) exits state 'Init'.
 <StateLog> Robot(7) enters state 'AtStation'.
-<CreateLog> Robot(8) was created by FleetScenario(2).
-<StateLog> Robot(8) enters state 'Init'.
-<GotoLog> Robot(8) is transitioning from state 'Init' to state 'PImplementation.Robot.AtStation'.
-<StateLog> Robot(8) exits state 'Init'.
-<StateLog> Robot(8) enters state 'AtStation'.
-<CreateLog> ObligationManager(9) was created by FleetScenario(2).
+<StateLog> ObligationManager(8) enters state 'Init'.
+<SendLog> 'ObligationManager(8)' in state 'Init' sent event 'eTaskAssigned with payload (<task:<taskId:1, robotId:1, priority:4, deadline:15, origin:0, dest:1, >, manager:ObligationManager(8), >)' to 'Robot(6)'.
+<DequeueLog> 'Robot(6)' dequeued event 'eTaskAssigned with payload (<task:<taskId:1, robotId:1, priority:4, deadline:15, origin:0, dest:1, >, manager:ObligationManager(8), >)' in state 'AtStation'.
+<GotoLog> Robot(6) is transitioning from state 'AtStation' to state 'PImplementation.Robot.Traveling'.
+<StateLog> Robot(6) exits state 'AtStation'.
+<StateLog> Robot(6) enters state 'Traveling'.
+<SendLog> 'Robot(6)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(6), robotId:1, reqId:1, zone:0, priority:4, violations:0, >)' to 'ZoneController(3)'.
+<SendLog> 'ObligationManager(8)' in state 'Init' sent event 'eTaskAssigned with payload (<task:<taskId:2, robotId:2, priority:8, deadline:15, origin:1, dest:0, >, manager:ObligationManager(8), >)' to 'Robot(7)'.
+<StateLog> AdaptationCoordinator(9) enters state 'Init'.
+<GotoLog> AdaptationCoordinator(9) is transitioning from state 'Init' to state 'PImplementation.AdaptationCoordinator.NormalV1'.
+<StateLog> AdaptationCoordinator(9) exits state 'Init'.
+<StateLog> AdaptationCoordinator(9) enters state 'NormalV1'.
 <CreateLog> HumanPicker(10) was created by FleetScenario(2).
-<StateLog> ObligationManager(9) enters state 'Init'.
-<SendLog> 'ObligationManager(9)' in state 'Init' sent event 'eTaskAssigned with payload (<task:<taskId:1, robotId:1, priority:4, deadline:15, origin:0, dest:1, >, manager:ObligationManager(9), >)' to 'Robot(7)'.
-<SendLog> 'ObligationManager(9)' in state 'Init' sent event 'eTaskAssigned with payload (<task:<taskId:2, robotId:2, priority:8, deadline:15, origin:1, dest:0, >, manager:ObligationManager(9), >)' to 'Robot(8)'.
-<StateLog> HumanPicker(10) enters state 'Init'.
-<RandomLog> HumanPicker(10) nondeterministically chose '0'.
-<RandomLog> HumanPicker(10) nondeterministically chose '1'.
-<GotoLog> HumanPicker(10) is transitioning from state 'Init' to state 'PImplementation.HumanPicker.Idle'.
-<StateLog> HumanPicker(10) exits state 'Init'.
-<StateLog> HumanPicker(10) enters state 'Idle'.
-<DequeueLog> 'Robot(8)' dequeued event 'eTaskAssigned with payload (<task:<taskId:2, robotId:2, priority:8, deadline:15, origin:1, dest:0, >, manager:ObligationManager(9), >)' in state 'AtStation'.
-<GotoLog> Robot(8) is transitioning from state 'AtStation' to state 'PImplementation.Robot.Traveling'.
-<StateLog> Robot(8) exits state 'AtStation'.
-<StateLog> Robot(8) enters state 'Traveling'.
-<DequeueLog> 'Robot(7)' dequeued event 'eTaskAssigned with payload (<task:<taskId:1, robotId:1, priority:4, deadline:15, origin:0, dest:1, >, manager:ObligationManager(9), >)' in state 'AtStation'.
-<GotoLog> Robot(7) is transitioning from state 'AtStation' to state 'PImplementation.Robot.Traveling'.
-<StateLog> Robot(7) exits state 'AtStation'.
-<StateLog> Robot(7) enters state 'Traveling'.
-<CreateLog> Clock(11) was created by ObligationManager(9).
-<GotoLog> ObligationManager(9) is transitioning from state 'Init' to state 'PImplementation.ObligationManager.Supervising'.
-<StateLog> ObligationManager(9) exits state 'Init'.
-<StateLog> ObligationManager(9) enters state 'Supervising'.
+<DequeueLog> 'ZoneController(3)' dequeued event 'eRequestZone with payload (<robot:Robot(6), robotId:1, reqId:1, zone:0, priority:4, violations:0, >)' in state 'Serving'.
+<CreateLog> Clock(11) was created by ObligationManager(8).
+<GotoLog> ObligationManager(8) is transitioning from state 'Init' to state 'PImplementation.ObligationManager.Supervising'.
+<StateLog> ObligationManager(8) exits state 'Init'.
+<StateLog> ObligationManager(8) enters state 'Supervising'.
+<SendLog> 'ZoneController(3)' in state 'Serving' sent event 'eGrant with payload (<zone:0, reqId:1, >)' to 'Robot(6)'.
+<AnnounceLog> 'ZoneController(3)' announced event 'eZoneGranted' with payload <zone:0, robotId:1, reqId:1, priority:4, violations:0, occupantId:-1, locked:False, cause:0, >.
 <StateLog> Clock(11) enters state 'Init'.
 <GotoLog> Clock(11) is transitioning from state 'Init' to state 'PImplementation.Clock.Ticking'.
 <StateLog> Clock(11) exits state 'Init'.
 <StateLog> Clock(11) enters state 'Ticking'.
-<SendLog> 'HumanPicker(10)' in state 'Idle' sent event 'eHumanRequest with payload (HumanPicker(10))' to 'AdaptationCoordinator(6)'.
-<GotoLog> HumanPicker(10) is transitioning from state 'Idle' to state 'PImplementation.HumanPicker.WaitingAccess'.
-<StateLog> HumanPicker(10) exits state 'Idle'.
-<StateLog> HumanPicker(10) enters state 'WaitingAccess'.
-<DequeueLog> 'AdaptationCoordinator(6)' dequeued event 'eHumanRequest with payload (HumanPicker(10))' in state 'NormalV1'.
-<SendLog> 'Robot(8)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(8), robotId:2, reqId:1, zone:2, priority:8, violations:0, >)' to 'ZoneController(5)'.
-<DequeueLog> 'ZoneController(5)' dequeued event 'eRequestZone with payload (<robot:Robot(8), robotId:2, reqId:1, zone:2, priority:8, violations:0, >)' in state 'Serving'.
-<SendLog> 'Robot(7)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(7), robotId:1, reqId:1, zone:0, priority:4, violations:0, >)' to 'ZoneController(3)'.
-<SendLog> 'Clock(11)' in state 'Ticking' sent event 'eTick with payload (1)' to 'ObligationManager(9)'.
-<DequeueLog> 'ObligationManager(9)' dequeued event 'eTick with payload (1)' in state 'Supervising'.
-<SendLog> 'ObligationManager(9)' in state 'Supervising' sent event 'eTickAck' to 'Clock(11)'.
-<DequeueLog> 'ZoneController(3)' dequeued event 'eRequestZone with payload (<robot:Robot(7), robotId:1, reqId:1, zone:0, priority:4, violations:0, >)' in state 'Serving'.
-<DequeueLog> 'Clock(11)' dequeued event 'eTickAck' in state 'Ticking'.
-<GotoLog> Clock(11) is transitioning from state 'Ticking' to state 'PImplementation.Clock.Ticking'.
-<StateLog> Clock(11) exits state 'Ticking'.
-<StateLog> Clock(11) enters state 'Ticking'.
-<SendLog> 'Clock(11)' in state 'Ticking' sent event 'eTick with payload (2)' to 'ObligationManager(9)'.
-<SendLog> 'AdaptationCoordinator(6)' in state 'NormalV1' sent event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(6), >)' to 'ZoneController(3)'.
-<DequeueLog> 'ObligationManager(9)' dequeued event 'eTick with payload (2)' in state 'Supervising'.
-<SendLog> 'ZoneController(3)' in state 'Serving' sent event 'eGrant with payload (<zone:0, reqId:1, >)' to 'Robot(7)'.
-<SendLog> 'ObligationManager(9)' in state 'Supervising' sent event 'eTickAck' to 'Clock(11)'.
-<DequeueLog> 'Clock(11)' dequeued event 'eTickAck' in state 'Ticking'.
-<GotoLog> Clock(11) is transitioning from state 'Ticking' to state 'PImplementation.Clock.Ticking'.
-<StateLog> Clock(11) exits state 'Ticking'.
-<StateLog> Clock(11) enters state 'Ticking'.
-<DequeueLog> 'ZoneController(3)' dequeued event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(6), >)' in state 'Serving'.
-<SendLog> 'ZoneController(3)' in state 'Serving' sent event 'eNormChangeAck with payload (<zone:0, version:1, >)' to 'AdaptationCoordinator(6)'.
-<SendLog> 'Clock(11)' in state 'Ticking' sent event 'eTick with payload (3)' to 'ObligationManager(9)'.
-<DequeueLog> 'ObligationManager(9)' dequeued event 'eTick with payload (3)' in state 'Supervising'.
-<SendLog> 'ZoneController(5)' in state 'Serving' sent event 'eGrant with payload (<zone:2, reqId:1, >)' to 'Robot(8)'.
-<DequeueLog> 'Robot(7)' dequeued event 'eGrant with payload (<zone:0, reqId:1, >)' in state 'Traveling'.
-<AnnounceLog> 'Robot(7)' announced event 'eZoneEntered' with payload <robotId:1, zone:0, >.
+<DequeueLog> 'Robot(7)' dequeued event 'eTaskAssigned with payload (<task:<taskId:2, robotId:2, priority:8, deadline:15, origin:1, dest:0, >, manager:ObligationManager(8), >)' in state 'AtStation'.
+<GotoLog> Robot(7) is transitioning from state 'AtStation' to state 'PImplementation.Robot.Traveling'.
+<StateLog> Robot(7) exits state 'AtStation'.
+<StateLog> Robot(7) enters state 'Traveling'.
+<StateLog> HumanPicker(10) enters state 'Init'.
+<RandomLog> HumanPicker(10) nondeterministically chose '4'.
+<RandomLog> HumanPicker(10) nondeterministically chose '7'.
+<GotoLog> HumanPicker(10) is transitioning from state 'Init' to state 'PImplementation.HumanPicker.Idle'.
+<StateLog> HumanPicker(10) exits state 'Init'.
+<StateLog> HumanPicker(10) enters state 'Idle'.
+<SendLog> 'HumanPicker(10)' in state 'Idle' sent event 'eHumanStep' to 'HumanPicker(10)'.
+<DequeueLog> 'Robot(6)' dequeued event 'eGrant with payload (<zone:0, reqId:1, >)' in state 'Traveling'.
+<AnnounceLog> 'Robot(6)' announced event 'eZoneEntered' with payload <robotId:1, zone:0, >.
 <MonitorLog> ZoneMutualExclusion is processing event 'eZoneEntered with payload (<robotId:1, zone:0, >)' in state 'Monitoring'.
 <MonitorLog> NoRobotWithHuman is processing event 'eZoneEntered with payload (<robotId:1, zone:0, >)' in state 'Monitoring'.
+<GotoLog> Robot(6) is transitioning from state 'Traveling' to state 'PImplementation.Robot.Traveling'.
+<StateLog> Robot(6) exits state 'Traveling'.
+<StateLog> Robot(6) enters state 'Traveling'.
+<DequeueLog> 'HumanPicker(10)' dequeued event 'eHumanStep' in state 'Idle'.
+<GotoLog> HumanPicker(10) is transitioning from state 'Idle' to state 'PImplementation.HumanPicker.Idle'.
+<StateLog> HumanPicker(10) exits state 'Idle'.
+<StateLog> HumanPicker(10) enters state 'Idle'.
+<SendLog> 'Robot(7)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(7), robotId:2, reqId:1, zone:2, priority:8, violations:0, >)' to 'ZoneController(5)'.
+<SendLog> 'Robot(6)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(6), robotId:1, reqId:2, zone:1, priority:4, violations:0, >)' to 'ZoneController(4)'.
+<SendLog> 'HumanPicker(10)' in state 'Idle' sent event 'eHumanStep' to 'HumanPicker(10)'.
+<DequeueLog> 'HumanPicker(10)' dequeued event 'eHumanStep' in state 'Idle'.
+<GotoLog> HumanPicker(10) is transitioning from state 'Idle' to state 'PImplementation.HumanPicker.Idle'.
+<StateLog> HumanPicker(10) exits state 'Idle'.
+<StateLog> HumanPicker(10) enters state 'Idle'.
+<DequeueLog> 'ZoneController(5)' dequeued event 'eRequestZone with payload (<robot:Robot(7), robotId:2, reqId:1, zone:2, priority:8, violations:0, >)' in state 'Serving'.
+<SendLog> 'ZoneController(5)' in state 'Serving' sent event 'eGrant with payload (<zone:2, reqId:1, >)' to 'Robot(7)'.
+<AnnounceLog> 'ZoneController(5)' announced event 'eZoneGranted' with payload <zone:2, robotId:2, reqId:1, priority:8, violations:0, occupantId:-1, locked:False, cause:0, >.
+<SendLog> 'Clock(11)' in state 'Ticking' sent event 'eTick with payload (1)' to 'ObligationManager(8)'.
+<SendLog> 'HumanPicker(10)' in state 'Idle' sent event 'eHumanStep' to 'HumanPicker(10)'.
+<DequeueLog> 'ObligationManager(8)' dequeued event 'eTick with payload (1)' in state 'Supervising'.
+<DequeueLog> 'ZoneController(4)' dequeued event 'eRequestZone with payload (<robot:Robot(6), robotId:1, reqId:2, zone:1, priority:4, violations:0, >)' in state 'Serving'.
+<SendLog> 'ObligationManager(8)' in state 'Supervising' sent event 'eTickAck' to 'Clock(11)'.
+<DequeueLog> 'Clock(11)' dequeued event 'eTickAck' in state 'Ticking'.
+<GotoLog> Clock(11) is transitioning from state 'Ticking' to state 'PImplementation.Clock.Ticking'.
+<StateLog> Clock(11) exits state 'Ticking'.
+<StateLog> Clock(11) enters state 'Ticking'.
+<DequeueLog> 'Robot(7)' dequeued event 'eGrant with payload (<zone:2, reqId:1, >)' in state 'Traveling'.
+<AnnounceLog> 'Robot(7)' announced event 'eZoneEntered' with payload <robotId:2, zone:2, >.
+<MonitorLog> ZoneMutualExclusion is processing event 'eZoneEntered with payload (<robotId:2, zone:2, >)' in state 'Monitoring'.
+<MonitorLog> NoRobotWithHuman is processing event 'eZoneEntered with payload (<robotId:2, zone:2, >)' in state 'Monitoring'.
 <GotoLog> Robot(7) is transitioning from state 'Traveling' to state 'PImplementation.Robot.Traveling'.
 <StateLog> Robot(7) exits state 'Traveling'.
 <StateLog> Robot(7) enters state 'Traveling'.
-<DequeueLog> 'Robot(8)' dequeued event 'eGrant with payload (<zone:2, reqId:1, >)' in state 'Traveling'.
-<AnnounceLog> 'Robot(8)' announced event 'eZoneEntered' with payload <robotId:2, zone:2, >.
-<MonitorLog> ZoneMutualExclusion is processing event 'eZoneEntered with payload (<robotId:2, zone:2, >)' in state 'Monitoring'.
-<MonitorLog> NoRobotWithHuman is processing event 'eZoneEntered with payload (<robotId:2, zone:2, >)' in state 'Monitoring'.
-<GotoLog> Robot(8) is transitioning from state 'Traveling' to state 'PImplementation.Robot.Traveling'.
-<StateLog> Robot(8) exits state 'Traveling'.
-<StateLog> Robot(8) enters state 'Traveling'.
-<SendLog> 'Robot(8)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(8), robotId:2, reqId:2, zone:1, priority:8, violations:0, >)' to 'ZoneController(4)'.
-<SendLog> 'AdaptationCoordinator(6)' in state 'NormalV1' sent event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(6), >)' to 'ZoneController(4)'.
-<SendLog> 'ObligationManager(9)' in state 'Supervising' sent event 'eTickAck' to 'Clock(11)'.
-<SendLog> 'Robot(7)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(7), robotId:1, reqId:2, zone:1, priority:4, violations:0, >)' to 'ZoneController(4)'.
+<SendLog> 'ZoneController(4)' in state 'Serving' sent event 'eGrant with payload (<zone:1, reqId:2, >)' to 'Robot(6)'.
+<AnnounceLog> 'ZoneController(4)' announced event 'eZoneGranted' with payload <zone:1, robotId:1, reqId:2, priority:4, violations:0, occupantId:-1, locked:False, cause:0, >.
+<DequeueLog> 'HumanPicker(10)' dequeued event 'eHumanStep' in state 'Idle'.
+<GotoLog> HumanPicker(10) is transitioning from state 'Idle' to state 'PImplementation.HumanPicker.Idle'.
+<StateLog> HumanPicker(10) exits state 'Idle'.
+<StateLog> HumanPicker(10) enters state 'Idle'.
+<SendLog> 'HumanPicker(10)' in state 'Idle' sent event 'eHumanStep' to 'HumanPicker(10)'.
+<DequeueLog> 'HumanPicker(10)' dequeued event 'eHumanStep' in state 'Idle'.
+<GotoLog> HumanPicker(10) is transitioning from state 'Idle' to state 'PImplementation.HumanPicker.Idle'.
+<StateLog> HumanPicker(10) exits state 'Idle'.
+<StateLog> HumanPicker(10) enters state 'Idle'.
+<SendLog> 'HumanPicker(10)' in state 'Idle' sent event 'eHumanRequest with payload (HumanPicker(10))' to 'AdaptationCoordinator(9)'.
+<GotoLog> HumanPicker(10) is transitioning from state 'Idle' to state 'PImplementation.HumanPicker.WaitingAccess'.
+<StateLog> HumanPicker(10) exits state 'Idle'.
+<StateLog> HumanPicker(10) enters state 'WaitingAccess'.
+<DequeueLog> 'AdaptationCoordinator(9)' dequeued event 'eHumanRequest with payload (HumanPicker(10))' in state 'NormalV1'.
+<SendLog> 'Clock(11)' in state 'Ticking' sent event 'eTick with payload (2)' to 'ObligationManager(8)'.
+<SendLog> 'AdaptationCoordinator(9)' in state 'NormalV1' sent event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(9), >)' to 'ZoneController(3)'.
+<SendLog> 'AdaptationCoordinator(9)' in state 'NormalV1' sent event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(9), >)' to 'ZoneController(4)'.
+<SendLog> 'Robot(7)' in state 'Traveling' sent event 'eRequestZone with payload (<robot:Robot(7), robotId:2, reqId:2, zone:1, priority:8, violations:0, >)' to 'ZoneController(4)'.
+<DequeueLog> 'Robot(6)' dequeued event 'eGrant with payload (<zone:1, reqId:2, >)' in state 'Traveling'.
+<AnnounceLog> 'Robot(6)' announced event 'eZoneLeft' with payload <robotId:1, zone:0, >.
+<MonitorLog> ZoneMutualExclusion is processing event 'eZoneLeft with payload (<robotId:1, zone:0, >)' in state 'Monitoring'.
+<MonitorLog> NoRobotWithHuman is processing event 'eZoneLeft with payload (<robotId:1, zone:0, >)' in state 'Monitoring'.
+<DequeueLog> 'ZoneController(3)' dequeued event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(9), >)' in state 'Serving'.
+<DequeueLog> 'ObligationManager(8)' dequeued event 'eTick with payload (2)' in state 'Supervising'.
+<DequeueLog> 'ZoneController(4)' dequeued event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(9), >)' in state 'Serving'.
+<SendLog> 'AdaptationCoordinator(9)' in state 'NormalV1' sent event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(9), >)' to 'ZoneController(5)'.
+<SendLog> 'ZoneController(3)' in state 'Serving' sent event 'eNormChangeAck with payload (<zone:0, version:1, >)' to 'AdaptationCoordinator(9)'.
+<SendLog> 'ObligationManager(8)' in state 'Supervising' sent event 'eTickAck' to 'Clock(11)'.
 <DequeueLog> 'Clock(11)' dequeued event 'eTickAck' in state 'Ticking'.
 <GotoLog> Clock(11) is transitioning from state 'Ticking' to state 'PImplementation.Clock.Ticking'.
 <StateLog> Clock(11) exits state 'Ticking'.
 <StateLog> Clock(11) enters state 'Ticking'.
-<SendLog> 'AdaptationCoordinator(6)' in state 'NormalV1' sent event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(6), >)' to 'ZoneController(5)'.
-<SendLog> 'Clock(11)' in state 'Ticking' sent event 'eTick with payload (4)' to 'ObligationManager(9)'.
-<DequeueLog> 'ObligationManager(9)' dequeued event 'eTick with payload (4)' in state 'Supervising'.
-<SendLog> 'ObligationManager(9)' in state 'Supervising' sent event 'eTickAck' to 'Clock(11)'.
-<DequeueLog> 'ZoneController(4)' dequeued event 'eRequestZone with payload (<robot:Robot(8), robotId:2, reqId:2, zone:1, priority:8, violations:0, >)' in state 'Serving'.
-<DequeueLog> 'Clock(11)' dequeued event 'eTickAck' in state 'Ticking'.
-<GotoLog> Clock(11) is transitioning from state 'Ticking' to state 'PImplementation.Clock.Ticking'.
-<StateLog> Clock(11) exits state 'Ticking'.
-<StateLog> Clock(11) enters state 'Ticking'.
-<SendLog> 'Clock(11)' in state 'Ticking' sent event 'eTick with payload (5)' to 'ObligationManager(9)'.
-<DequeueLog> 'ObligationManager(9)' dequeued event 'eTick with payload (5)' in state 'Supervising'.
-<SendLog> 'ZoneController(4)' in state 'Serving' sent event 'eGrant with payload (<zone:1, reqId:2, >)' to 'Robot(8)'.
-<SendLog> 'AdaptationCoordinator(6)' in state 'NormalV1' sent event 'eHumanAccessGranted' to 'HumanPicker(10)'.
-<GotoLog> AdaptationCoordinator(6) is transitioning from state 'NormalV1' to state 'PImplementation.AdaptationCoordinator.SwitchingToV2'.
-<StateLog> AdaptationCoordinator(6) exits state 'NormalV1'.
-<StateLog> AdaptationCoordinator(6) enters state 'SwitchingToV2'.
-<DequeueLog> 'ZoneController(5)' dequeued event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(6), >)' in state 'Serving'.
-<DequeueLog> 'AdaptationCoordinator(6)' dequeued event 'eNormChangeAck with payload (<zone:0, version:1, >)' in state 'SwitchingToV2'.
+<SendLog> 'Robot(6)' in state 'Traveling' sent event 'eRelease with payload (<robotId:1, reqId:1, zone:0, >)' to 'ZoneController(3)'.
+<AnnounceLog> 'Robot(6)' announced event 'eZoneEntered' with payload <robotId:1, zone:1, >.
+<MonitorLog> ZoneMutualExclusion is processing event 'eZoneEntered with payload (<robotId:1, zone:1, >)' in state 'Monitoring'.
+<MonitorLog> NoRobotWithHuman is processing event 'eZoneEntered with payload (<robotId:1, zone:1, >)' in state 'Monitoring'.
+<GotoLog> Robot(6) is transitioning from state 'Traveling' to state 'PImplementation.Robot.Traveling'.
+<StateLog> Robot(6) exits state 'Traveling'.
+<StateLog> Robot(6) enters state 'Traveling'.
+<SendLog> 'AdaptationCoordinator(9)' in state 'NormalV1' sent event 'eHumanAccessGranted' to 'HumanPicker(10)'.
+<GotoLog> AdaptationCoordinator(9) is transitioning from state 'NormalV1' to state 'PImplementation.AdaptationCoordinator.SwitchingToV2'.
+<StateLog> AdaptationCoordinator(9) exits state 'NormalV1'.
+<StateLog> AdaptationCoordinator(9) enters state 'SwitchingToV2'.
+<SendLog> 'ZoneController(4)' in state 'Serving' sent event 'ePreempt with payload (<zone:1, reqId:2, >)' to 'Robot(6)'.
+<AnnounceLog> 'ZoneController(4)' announced event 'ePreemptIssued' with payload <zone:1, robotId:1, reqId:2, cause:3, >.
 <DequeueLog> 'HumanPicker(10)' dequeued event 'eHumanAccessGranted' in state 'WaitingAccess'.
 <AnnounceLog> 'HumanPicker(10)' announced event 'eHumanEnter'.
 <MonitorLog> NoRobotWithHuman is processing event 'eHumanEnter' in state 'Monitoring'.
-<GotoLog> HumanPicker(10) is transitioning from state 'WaitingAccess' to state 'PImplementation.HumanPicker.Working'.
-<StateLog> HumanPicker(10) exits state 'WaitingAccess'.
-<StateLog> HumanPicker(10) enters state 'Working'.
-<DequeueLog> 'ZoneController(4)' dequeued event 'eNormChange with payload (<version:1, coord:AdaptationCoordinator(6), >)' in state 'Serving'.
-<DequeueLog> 'Robot(8)' dequeued event 'eGrant with payload (<zone:1, reqId:2, >)' in state 'Traveling'.
-<AnnounceLog> 'Robot(8)' announced event 'eZoneLeft' with payload <robotId:2, zone:2, >.
-<MonitorLog> ZoneMutualExclusion is processing event 'eZoneLeft with payload (<robotId:2, zone:2, >)' in state 'Monitoring'.
-<MonitorLog> NoRobotWithHuman is processing event 'eZoneLeft with payload (<robotId:2, zone:2, >)' in state 'Monitoring'.
-<SendLog> 'ZoneController(4)' in state 'Serving' sent event 'ePreempt with payload (<zone:1, reqId:2, >)' to 'Robot(8)'.
-<SendLog> 'ZoneController(5)' in state 'Serving' sent event 'eNormChangeAck with payload (<zone:2, version:1, >)' to 'AdaptationCoordinator(6)'.
-<SendLog> 'Robot(8)' in state 'Traveling' sent event 'eRelease with payload (<robotId:2, reqId:1, zone:2, >)' to 'ZoneController(5)'.
-<AnnounceLog> 'Robot(8)' announced event 'eZoneEntered' with payload <robotId:2, zone:1, >.
-<MonitorLog> ZoneMutualExclusion is processing event 'eZoneEntered with payload (<robotId:2, zone:1, >)' in state 'Monitoring'.
-<MonitorLog> NoRobotWithHuman is processing event 'eZoneEntered with payload (<robotId:2, zone:1, >)' in state 'Monitoring'.
-<ErrorLog> Assertion Failed: PSpec/Safety.p:31:9 N5 violated: robot 2 entered zone 1 while the human is inside
+<ErrorLog> Assertion Failed: PSpec/Safety.p:43:7 N6 violated: the human entered zone 1 while robots (<1>) are inside
 <StrategyLog> Found bug using 'random' strategy.
 <StrategyLog> Checking statistics:
 <StrategyLog> Found 1 bug.
 <StrategyLog> Scheduling statistics:
-<StrategyLog> Explored 1 schedule
-<StrategyLog> Explored 1 timeline
-<StrategyLog> Found 100.00% buggy schedules.
-<StrategyLog> Number of scheduling points in terminating schedules: 74 (min), 74 (avg), 74 (max).
+<StrategyLog> Explored 6 schedules
+<StrategyLog> Explored 5 timelines
+<StrategyLog> Found 16.67% buggy schedules.
+<StrategyLog> Number of scheduling points in terminating schedules: 69 (min), 159 (avg), 197 (max).

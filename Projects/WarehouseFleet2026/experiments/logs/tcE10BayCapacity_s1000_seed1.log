@@ -1,0 +1,43 @@
+ Container p-language-p-run-be3c5db21ea0 Creating 
+ Container p-language-p-run-be3c5db21ea0 Created 
+.. Searching for a P project file *.pproj locally in the current folder
+.. Found P project file: /workspace/Projects/WarehouseFleet2026/WarehouseFleet/WarehouseFleet.pproj
+.. Searching for a P compiled file locally in folder ./PGenerated/
+.. Found a P compiled file: ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Checking ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Running test cases with prefix 'tcE10BayCapacity':
+tcE10BayCapacity
+.. Test case :: tcE10BayCapacity
+... Checker is using 'random' strategy (seed:1).
+..... Schedule #1
+..... Schedule #2
+..... Schedule #3
+..... Schedule #4
+..... Schedule #5
+..... Schedule #6
+..... Schedule #7
+..... Schedule #8
+..... Schedule #9
+..... Schedule #10
+..... Schedule #20
+Checker found a bug.
+... Emitting traces:
+..... Writing PCheckerOutput/tcE10BayCapacity_s1000_seed1/BugFinding/WarehouseFleet_0_0.txt
+..... Writing PCheckerOutput/tcE10BayCapacity_s1000_seed1/BugFinding/WarehouseFleet_0_0.trace.json
+..... Writing PCheckerOutput/tcE10BayCapacity_s1000_seed1/BugFinding/WarehouseFleet_0_0.schedule
+... Elapsed 0.55 sec and used 0.01 GB.
+... Emitting coverage report:
+..... Writing PCheckerOutput/tcE10BayCapacity_s1000_seed1/BugFinding/WarehouseFleet.coverage.txt
+..... Writing PCheckerOutput/tcE10BayCapacity_s1000_seed1/BugFinding/WarehouseFleet.sci
+... Checking statistics:
+..... Found 1 bug.
+... Scheduling statistics:
+..... Explored 22 schedules
+..... Explored 18 timelines
+..... Found 4.55% buggy schedules.
+..... Number of scheduling points in terminating schedules: 110 (min), 203 (avg), 251 (max).
+..... Writing PCheckerOutput/tcE10BayCapacity_s1000_seed1/BugFinding/WarehouseFleet_pchecker_summary.txt
+... Elapsed 0.5865136 sec.
+. Done
+~~ [PTool]: Thanks for using P! ~~
+

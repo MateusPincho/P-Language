@@ -1,0 +1,70 @@
+ Container p-language-p-run-f7b695ccb1ba Creating 
+ Container p-language-p-run-f7b695ccb1ba Created 
+.. Searching for a P project file *.pproj locally in the current folder
+.. Found P project file: /workspace/Projects/WarehouseFleet2026/WarehouseFleet/WarehouseFleet.pproj
+.. Searching for a P compiled file locally in folder ./PGenerated/
+.. Found a P compiled file: ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Checking ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Running test cases with prefix 'tcHumanAdaptation':
+tcHumanAdaptation
+.. Test case :: tcHumanAdaptation
+... Checker is using 'random' strategy (seed:1).
+..... Schedule #1
+..... Schedule #2
+..... Schedule #3
+..... Schedule #4
+..... Schedule #5
+..... Schedule #6
+..... Schedule #7
+..... Schedule #8
+..... Schedule #9
+..... Schedule #10
+..... Schedule #20
+..... Schedule #30
+..... Schedule #40
+..... Schedule #50
+..... Schedule #60
+..... Schedule #70
+..... Schedule #80
+..... Schedule #90
+..... Schedule #100
+..... Schedule #200
+..... Schedule #300
+..... Schedule #400
+..... Schedule #500
+..... Schedule #600
+..... Schedule #700
+..... Schedule #800
+..... Schedule #900
+..... Schedule #1000
+..... Schedule #2000
+..... Schedule #3000
+..... Schedule #4000
+..... Schedule #5000
+..... Schedule #6000
+..... Schedule #7000
+..... Schedule #8000
+..... Schedule #9000
+..... Schedule #10000
+..... Schedule #20000
+..... Schedule #30000
+..... Schedule #40000
+..... Schedule #50000
+..... Schedule #60000
+..... Schedule #70000
+..... Schedule #80000
+..... Schedule #90000
+..... Schedule #100000
+... Emitting coverage report:
+..... Writing PCheckerOutput/tcHumanAdaptation_s100000_seed1/BugFinding/WarehouseFleet.coverage.txt
+..... Writing PCheckerOutput/tcHumanAdaptation_s100000_seed1/BugFinding/WarehouseFleet.sci
+... Checking statistics:
+..... Found 0 bugs.
+... Scheduling statistics:
+..... Explored 100000 schedules
+..... Explored 540 timelines
+..... Number of scheduling points in terminating schedules: 131 (min), 209 (avg), 323 (max).
+..... Writing PCheckerOutput/tcHumanAdaptation_s100000_seed1/BugFinding/WarehouseFleet_pchecker_summary.txt
+... Elapsed 2443.898076 sec.
+. Done
+~~ [PTool]: Thanks for using P! ~~

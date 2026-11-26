@@ -1,0 +1,46 @@
+2026-11-23	tcE7ReplacesN7	1000	1	1	1	1	0.1700899
+.	Assertion Failed: PSpec/NormMonitors.p:119:9 N7 violated: task 2 (deadline 4) is still open at tick 5
+2026-11-23	tcE3FairnessTraffic	1000	1	1	2	2	0.1971225
+.	Assertion Failed: PSpec/Fairness.p:90:5 F1 (traffic-caused): task 2 was sanctioned after a 2 delay caused by the other robot
+2026-11-23	tcE8ThreeRobots	1000	1	1	1	1	0.188785
+.	Assertion Failed: PSpec/NormMonitors.p:28:11 N2 violated: zone 2 admitted robot 2 (P=0, inf=2) while robot 3 (P=2, inf=0) was waiting
+2026-11-23	tcE9Abort	1000	1	1	3	3	0.0627955
+.	Assertion Failed: PSpec/NormMonitors.p:28:11 N2 violated: zone 0 admitted robot 1 (P=6, inf=1) while robot 2 (P=8, inf=0) was waiting
+2026-11-23	tcE9AbortBreaksL2	1000	1	1	3	3	0.2380761
+.	PImplementation.HumanEventuallyEnters detected liveness bug in hot state 'Waiting' at the end of program execution.
+2026-11-23	tcE10BayCapacity	1000	1	1	22	18	0.6567518
+.	Assertion Failed: PSpec/ExperimentMonitors.p:37:7 bay 1 over capacity: robot 2 entered while (<1>) is inside
+2026-11-23	tcE4BlockAll	1000	1	1	3	3	8.022738
+.	Assertion Failed: PSpec/NormMonitors.p:28:11 N2 violated: zone 2 admitted robot 2 (P=5, inf=1) while robot 1 (P=5, inf=0) was waiting
+2026-11-23	tcHeadOnV1	1000	1	0	1000	12	9.5370441
+.	
+2026-11-23	tcHumanAdaptation	1000	1	1	7	7	0.320337
+.	Assertion Failed: PSpec/NormMonitors.p:28:11 N2 violated: zone 0 admitted robot 1 (P=4, inf=0) while robot 2 (P=8, inf=0) was waiting
+2026-11-23	tcE6FairnessTraffic	1000	1	0	1000	244	11.0206347
+.	
+2026-11-23	tcRandomTasks	1000	1	1	5	5	0.2904543
+.	Assertion Failed: PSpec/NormMonitors.p:28:11 N2 violated: zone 1 admitted robot 1 (P=4, inf=0) while robot 2 (P=9, inf=0) was waiting
+2026-11-23	tcE6FairnessRegulation	1000	1	1	1	1	0.1682094
+.	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 1 delay imposed by the regulation
+2026-11-23	tcNaiveAdaptation	1000	1	1	6	5	0.2781324
+.	Assertion Failed: PSpec/Safety.p:43:7 N6 violated: the human entered zone 1 while robots (<1>) are inside
+2026-11-23	tcCoverSanctionInV2	1000	1	1	1	1	0.1856654
+.	Assertion Failed: PSpec/Cover.p:15:7 COVER WITNESS (expected): robot 1 sanctioned for task 1 while V2 is active
+2026-11-23	tcE7Suspend	1000	1	1	4	4	0.1073469
+.	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 1 delay imposed by the regulation
+2026-11-23	tcE3FairnessRegulation	1000	1	1	1	1	0.1487763
+.	Assertion Failed: PSpec/Fairness.p:53:5 F1 (regulation-caused): task 2 was sanctioned after a 1 delay imposed by the regulation
+2026-11-23	tcE7SuspendExcuse	1000	1	1	4	4	0.0885269
+.	Assertion Failed: PSpec/NormMonitors.p:28:11 N2 violated: zone 0 admitted robot 1 (P=5, inf=0) while robot 2 (P=7, inf=0) was waiting
+2026-11-23	tcE7SuspendExcuseRandom	1000	1	1	4	4	0.2777956
+.	Assertion Failed: PSpec/NormMonitors.p:28:11 N2 violated: zone 0 admitted robot 1 (P=0, inf=1) while robot 2 (P=2, inf=1) was waiting
+2026-11-23	tcE7Traffic	1000	1	1	3	3	0.2045663
+.	Assertion Failed: PSpec/Fairness.p:90:5 F1 (traffic-caused): task 1 was sanctioned after a 2 delay caused by the other robot
+2026-11-23	tcE4BlockAllNoParking	1000	1	1	3	3	6.7697106
+.	PImplementation.HumanEventuallyEnters detected potential liveness bug in hot state 'Waiting'.
+2026-11-23	tcE5NoParking	1000	1	1	3	3	5.8181416
+.	PImplementation.HumanEventuallyEnters detected potential liveness bug in hot state 'Waiting'.
+2026-11-23	tcE6HeadOnInBaseline	1000	1	1	1	1	0.1436225
+.	Assertion Failed: PSpec/ExperimentMonitors.p:21:9 head-on conflict: robot 1 (0) denied zone 2, held by robot 2 (1)
+2026-11-23	tcE6OneDirection	1000	1	1	66	62	1.2808845
+.	Assertion Failed: PSpec/ExperimentMonitors.p:21:9 head-on conflict: robot 1 (1) denied zone 2, held by robot 2 (0)

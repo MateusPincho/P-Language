@@ -278,3 +278,38 @@ Each test's expected outcome is a **hypothesis until run**; results are in `READ
    switch: the coordinator admits the human only after all three controllers ack V2, and controller 1
    acks only once empty. `tcNaiveAdaptation` removes the wait to show the check is not vacuous.
 9. **Bays and stations** have unlimited capacity; a bay is entered and left without a controller.
+
+## 8. Additions for the assignment's experiments *(ours)*
+
+The assignment's experiments (E0–E10) are mapped to this model in [`EXPERIMENTS.md`](EXPERIMENTS.md).
+They added three things. With every switch off (`BASELINE()`), the model behaves exactly as described
+in sections 1–7.
+
+**Experiment switches** (`tVariant` in `PSrc/Enums_Types_Events.p`, all off in the final model):
+
+| Switch | Effect when on |
+|---|---|
+| `blockAll` (E4) | every controller locks and evacuates its zone under V2 until the coordinator sends `eNormCommit` |
+| `parking = false` (E5) | no side bays: a preempted robot stays; a sanctioned robot keeps its zone and finishes empty |
+| `remedy` (E7) | `SUSPEND`: no deadline counts down during V2 (the coordinator notifies the Fleet Manager with `eAdaptationNotice` and waits for `eAdaptationNoticeAck` before broadcasting V2). `SUSPEND_EXCUSE`: also, a task open during V2 whose deadline expires is excused (`eObligationExcused`), not sanctioned. Both replace N7 |
+| `oneDirection` (E6) | a new machine, `DirectionGuard`, grants one travel direction at a time (`eDirRequest`, `eDirGrant`, `eDirRelease`, `eDirCancel`) |
+| `abortable` (E9) | the coordinator may time out (`eAdaptTimeout`), abort (`eAdaptationAborted`), restore V1 and refuse the human (`eHumanAccessRefused`) |
+
+**Monitor vocabulary** (announced, so machine behavior is unchanged):
+- `eAccessDenied` and `eZoneGranted`: each admission decision, with the controller's view of the zone
+  and, for a denial, its cause (`tDelayCause`).
+- `ePreemptIssued`: each preemption, with its cause.
+- `eTaskAbandoned`: a sanctioned robot giving up its delivery.
+- `eDirectionDenied`: a robot waiting for the travel direction (E6).
+- `eBayEntered` and `eBayLeft`: side-bay moves (E10).
+
+**Monitors** for the norms that properties 1–4 left unchecked:
+- `PriorityRespected` and `EmptyRobotHasPriorityZero` (N2);
+- `OutrankedOccupantPreempted` (N3);
+- `DeadlinesKeepRunning` (N4/N7);
+- `V1EventuallyRestored` (N8).
+
+Monitors used by individual experiments: the fairness monitors `NoRegulationCausedSanction` and
+`NoTrafficCausedSanction` (E3), `NoHeadOnConflict` (E6), `AdaptationTerminates`, `AbortNeverAdmits` and
+`AbortUnblocksControllers` (E9), and `BayCapacityOne` (E10). The full list, with what each checks, is in
+`EXPERIMENTS.md` §1.

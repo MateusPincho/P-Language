@@ -33,6 +33,7 @@ machine HumanPicker {
       announce eHumanEnter;
       goto Working;
     }
+    on eHumanAccessRefused goto Gone;   // E9 only: the switch was aborted
   }
 
   state Working {
