@@ -1,0 +1,34 @@
+ Container p-language-p-run-04b156c0ceda Creating 
+ Container p-language-p-run-04b156c0ceda Created 
+.. Searching for a P project file *.pproj locally in the current folder
+.. Found P project file: /workspace/Projects/WarehouseFleet2026/WarehouseFleet/WarehouseFleet.pproj
+.. Searching for a P compiled file locally in folder ./PGenerated/
+.. Found a P compiled file: ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Checking ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Running test cases with prefix 'tcE3FairnessTraffic':
+tcE3FairnessTraffic
+.. Test case :: tcE3FairnessTraffic
+... Checker is using 'random' strategy (seed:1).
+..... Schedule #1
+..... Schedule #2
+Checker found a bug.
+... Emitting traces:
+..... Writing PCheckerOutput/tcE3FairnessTraffic_s1000_seed1/BugFinding/WarehouseFleet_0_0.txt
+..... Writing PCheckerOutput/tcE3FairnessTraffic_s1000_seed1/BugFinding/WarehouseFleet_0_0.trace.json
+..... Writing PCheckerOutput/tcE3FairnessTraffic_s1000_seed1/BugFinding/WarehouseFleet_0_0.schedule
+... Elapsed 0.15 sec and used 0 GB.
+... Emitting coverage report:
+..... Writing PCheckerOutput/tcE3FairnessTraffic_s1000_seed1/BugFinding/WarehouseFleet.coverage.txt
+..... Writing PCheckerOutput/tcE3FairnessTraffic_s1000_seed1/BugFinding/WarehouseFleet.sci
+... Checking statistics:
+..... Found 1 bug.
+... Scheduling statistics:
+..... Explored 2 schedules
+..... Explored 2 timelines
+..... Found 50.00% buggy schedules.
+..... Number of scheduling points in terminating schedules: 88 (min), 143 (avg), 199 (max).
+..... Writing PCheckerOutput/tcE3FairnessTraffic_s1000_seed1/BugFinding/WarehouseFleet_pchecker_summary.txt
+... Elapsed 0.184692 sec.
+. Done
+~~ [PTool]: Thanks for using P! ~~
+

@@ -1,0 +1,44 @@
+$ cd Projects/WarehouseFleet2026/.mutants/M01_N1 && p compile
+ Container p-language-p-run-ebb6cdc507da Creating 
+ Container p-language-p-run-ebb6cdc507da Created 
+.. Searching for a P project file *.pproj locally in the current folder
+.. Found P project file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/WarehouseFleet.pproj
+----------------------------------------
+==== Loading project file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/WarehouseFleet.pproj
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/Clock.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/HumanPicker.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/Enums_Types_Events.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/ZoneController.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/Robot.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/ObligationManager.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/AdaptationCoordinator.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSrc/DirectionGuard.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSpec/Cover.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSpec/Liveness.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSpec/Safety.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSpec/NormMonitors.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSpec/Fairness.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PSpec/ExperimentMonitors.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PTst/TestDriver.p
+....... includes p file: /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PTst/TestScript.p
+----------------------------------------
+Parsing ...
+Type checking ...
+----------------------------------------
+Code generation for PChecker...
+Generated WarehouseFleet.cs.
+Compiling generated code...
+  Determining projects to restore...
+  Restored /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PGenerated/PChecker/WarehouseFleet.csproj (in 92 ms).
+  WarehouseFleet -> /workspace/Projects/WarehouseFleet2026/.mutants/M01_N1/PGenerated/PChecker/net8.0/WarehouseFleet.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:03.50
+
+
+----------------------------------------
+Compilation succeeded.
+~~ [PTool]: Thanks for using P! ~~

@@ -1,0 +1,33 @@
+ Container p-language-p-run-78f2de0a4333 Creating 
+ Container p-language-p-run-78f2de0a4333 Created 
+.. Searching for a P project file *.pproj locally in the current folder
+.. Found P project file: /workspace/Projects/WarehouseFleet2026/WarehouseFleet/WarehouseFleet.pproj
+.. Searching for a P compiled file locally in folder ./PGenerated/
+.. Found a P compiled file: ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Checking ./PGenerated/PChecker/net8.0/WarehouseFleet.dll
+.. Running test cases with prefix 'tcCoverSanctionInV2':
+tcCoverSanctionInV2
+.. Test case :: tcCoverSanctionInV2
+... Checker is using 'random' strategy (seed:7).
+..... Schedule #1
+Checker found a bug.
+... Emitting traces:
+..... Writing PCheckerOutput/tcCoverSanctionInV2_s100000_seed7/BugFinding/WarehouseFleet_0_0.txt
+..... Writing PCheckerOutput/tcCoverSanctionInV2_s100000_seed7/BugFinding/WarehouseFleet_0_0.trace.json
+..... Writing PCheckerOutput/tcCoverSanctionInV2_s100000_seed7/BugFinding/WarehouseFleet_0_0.schedule
+... Elapsed 0.19 sec and used 0 GB.
+... Emitting coverage report:
+..... Writing PCheckerOutput/tcCoverSanctionInV2_s100000_seed7/BugFinding/WarehouseFleet.coverage.txt
+..... Writing PCheckerOutput/tcCoverSanctionInV2_s100000_seed7/BugFinding/WarehouseFleet.sci
+... Checking statistics:
+..... Found 1 bug.
+... Scheduling statistics:
+..... Explored 1 schedule
+..... Explored 1 timeline
+..... Found 100.00% buggy schedules.
+..... Number of scheduling points in terminating schedules: 87 (min), 87 (avg), 87 (max).
+..... Writing PCheckerOutput/tcCoverSanctionInV2_s100000_seed7/BugFinding/WarehouseFleet_pchecker_summary.txt
+... Elapsed 0.2643319 sec.
+. Done
+~~ [PTool]: Thanks for using P! ~~
+

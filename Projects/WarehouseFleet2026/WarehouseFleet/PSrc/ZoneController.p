@@ -1,7 +1,13 @@
 // One per zone. Distributed regimentation: admits or denies robots from its
 // local occupancy and the norm version it currently holds (N1, N2, N3, N5, N6).
+//
+// The announce statements report each decision and its cause to the monitors
+// (E3, N2, N3); they do not change what the controller does. blockAll is the
+// E4 switch and is false in the final model.
 machine ZoneController {
   var zone: int;
+  var blockAll: bool;                     // E4: lock every zone while V2 is installed
+  var committed: bool;                    // E4: V2 installed everywhere, non-human zones reopen
   var version: tNormVersion;
   var occupied: bool;
   var occ: tRequestZone;                  // the request that won the zone
@@ -11,8 +17,9 @@ machine ZoneController {
   var coord: machine;
 
   start state Init {
-    entry (z: int) {
-      zone = z;
+    entry (cfg: tZoneConfig) {
+      zone = cfg.zone;
+      blockAll = cfg.blockAll;
       version = V1;
       goto Serving;
     }
@@ -36,11 +43,17 @@ machine ZoneController {
     }
 
     on eNormChange do OnNormChange;
+
+    // E4 only: V2 is installed in every zone; zones other than zone 1 reopen.
+    on eNormCommit do {
+      committed = true;
+      GrantNext();
+    }
   }
 
-  // N5: zone 1 under V2 admits nobody.
+  // N5: zone 1 under V2 admits nobody. E4: under V2, before the commit, no zone does.
   fun Locked(): bool {
-    return version == V2 && zone == HUMAN_ZONE();
+    return version == V2 && (zone == HUMAN_ZONE() || (blockAll && !committed));
   }
 
   fun IsOccupant(r: tZoneRelease): bool {
@@ -63,6 +76,7 @@ machine ZoneController {
 
     if (Locked()) {                                   // N5
       Queue(req);
+      AnnounceDenied(req, CLOSED);
       return;
     }
     if (!occupied) {                                  // N1: free -> grant
@@ -72,8 +86,9 @@ machine ZoneController {
     Queue(req);                                       // N1: occupied -> deny, wait
     if (!preempting && Wins(req, occ)) {              // N3
       preempting = true;
-      send occ.robot, ePreempt, (zone = zone, reqId = occ.reqId);
+      Preempt(OUTRANKED);
     }
+    AnnounceDenied(req, OCCUPIED);
   }
 
   fun Queue(req: tRequestZone) {
@@ -87,13 +102,30 @@ machine ZoneController {
     preempting = false;
     if (req.robotId in waiters) { waiters -= (req.robotId); }
     send req.robot, eGrant, (zone = zone, reqId = req.reqId);
+    announce eZoneGranted, (zone = zone, robotId = req.robotId, reqId = req.reqId,
+                            priority = req.priority, violations = req.violations,
+                            occupantId = -1, locked = false, cause = OCCUPIED);
+  }
+
+  fun Preempt(cause: tDelayCause) {
+    send occ.robot, ePreempt, (zone = zone, reqId = occ.reqId);
+    announce ePreemptIssued, (zone = zone, robotId = occ.robotId, reqId = occ.reqId, cause = cause);
+  }
+
+  fun AnnounceDenied(req: tRequestZone, cause: tDelayCause) {
+    var occupantId: int;
+    occupantId = -1;
+    if (occupied) { occupantId = occ.robotId; }
+    announce eAccessDenied, (zone = zone, robotId = req.robotId, reqId = req.reqId,
+                             priority = req.priority, violations = req.violations,
+                             occupantId = occupantId, locked = Locked(), cause = cause);
   }
 
   fun FreeZone() {
     occupied = false;
     preempting = false;
     if (Locked()) {
-      if (awaitingClear) {                            // N6: zone 1 is now empty
+      if (awaitingClear) {                            // N6: the zone is now empty
         awaitingClear = false;
         send coord, eNormChangeAck, (zone = zone, version = V2);
       }
@@ -120,6 +152,11 @@ machine ZoneController {
   fun OnNormChange(n: tNormChange) {
     coord = n.coord;
     version = n.version;
+    if (version == V2) {
+      committed = false;
+    } else {
+      awaitingClear = false;                          // E9: an aborted switch owes no V2 ack
+    }
     if (Locked()) {
       if (!occupied) {
         send coord, eNormChangeAck, (zone = zone, version = version);
@@ -127,7 +164,7 @@ machine ZoneController {
         awaitingClear = true;
         if (!preempting) {                            // N6: regardless of priority
           preempting = true;
-          send occ.robot, ePreempt, (zone = zone, reqId = occ.reqId);
+          Preempt(EVACUATED);
         }
       }
     } else {

@@ -1,0 +1,29 @@
+2026-11-24	tcHeadOnV1	10000	1	0	10000	19	123.2934185	
+2026-11-24	tcE6FairnessTraffic	10000	1	0	10000	882	164.0918408	
+2026-11-24	tcE4BlockAllParking	10000	1	0	10000	1225	223.6464439	
+2026-11-24	tcE5NoParking	10000	1	1	3	3	13.8296953	PImplementation.HumanEventuallyEnters detected potential liveness bug in hot state 'Waiting'.
+2026-11-24	tcE6HeadOnInBaseline	10000	1	1	1	1	0.2553375	Assertion Failed: PSpec/ExperimentMonitors.p:34:7 head-on conflict: robot 1 (direction A->B) denied zone 2, held by robot 2 (direction B->A)
+2026-11-24	tcE8ThreeRobots	10000	1	0	10000	2254	281.1823144	
+2026-11-24	tcHumanAdaptation	10000	1	0	10000	299	213.3166232	
+2026-11-24	tcE7SuspendExcuseShort	10000	1	0	10000	440	220.1585559	
+2026-11-24	tcE6OneDirection	10000	1	0	10000	1473	201.2904498	
+2026-11-24	tcE6FairnessRegulation	10000	1	1	1	1	0.2933876	Assertion Failed: PSpec/Fairness.p:56:5 F1 (regulation-caused): task 2 was sanctioned after a delay imposed by the regulation: CLOSED (Zone 1 locked under V2, N5)
+2026-11-24	tcE7SuspendOnly	10000	1	1	4	4	0.4109404	Assertion Failed: PSpec/Fairness.p:56:5 F1 (regulation-caused): task 2 was sanctioned after a delay imposed by the regulation: CLOSED (Zone 1 locked under V2, N5)
+2026-11-24	tcE7Traffic	10000	1	1	3	3	0.4187706	Assertion Failed: PSpec/Fairness.p:94:5 F1 (traffic-caused): task 1 was sanctioned after a delay caused by the other robot: OCCUPIED (zone held by the other robot, N1)
+2026-11-24	tcE7ReplacesN7	10000	1	1	1	1	0.3297656	Assertion Failed: PSpec/NormMonitors.p:134:9 N7 violated: task 2 (deadline 4) is still open at tick 5
+2026-11-24	tcE9AbortSafety	10000	1	0	10000	3438	192.2306629	
+2026-11-24	tcRandomTasks	10000	1	0	10000	1199	216.0172369	
+2026-11-24	tcNaiveAdaptation	10000	1	1	6	5	0.4613752	Assertion Failed: PSpec/Safety.p:43:7 N6 violated: the human entered zone 1 while robots (<1>) are inside
+2026-11-24	tcCoverSanctionInV2	10000	1	1	1	1	0.258604	Assertion Failed: PSpec/Cover.p:15:7 COVER WITNESS (expected): robot 1 sanctioned for task 1 while V2 is active
+2026-11-24	tcE3FairnessRegulation	10000	1	1	1	1	0.2286467	Assertion Failed: PSpec/Fairness.p:56:5 F1 (regulation-caused): task 2 was sanctioned after a delay imposed by the regulation: CLOSED (Zone 1 locked under V2, N5)
+2026-11-24	tcE3FairnessTraffic	10000	1	1	2	2	0.2995789	Assertion Failed: PSpec/Fairness.p:94:5 F1 (traffic-caused): task 2 was sanctioned after a delay caused by the other robot: OUTRANKED (pushed out by a higher priority, N3)
+2026-11-24	tcE3TrafficNoHuman	10000	1	1	1	1	0.2530076	Assertion Failed: PSpec/Fairness.p:94:5 F1 (traffic-caused): task 2 was sanctioned after a delay caused by the other robot: OCCUPIED (zone held by the other robot, N1)
+2026-11-24	tcE4BlockAllNoParking	10000	1	1	3	3	16.5185097	PImplementation.HumanEventuallyEnters detected potential liveness bug in hot state 'Waiting'.
+2026-11-24	tcE7SuspendExcuseRandom	10000	1	0	10000	1061	213.8254548	
+2026-11-24	tcE9AbortBreaksL2	10000	1	1	3	3	0.2810769	PImplementation.HumanEventuallyEnters detected liveness bug in hot state 'Waiting' at the end of program execution.
+2026-11-24	tcE10BayCapacity	10000	1	1	22	18	0.741995	Assertion Failed: PSpec/ExperimentMonitors.p:49:7 bay 1 over capacity: robot 2 entered while (<1>) is inside
+2026-11-24	tcRandomTasks@4zones	10000	1	0	10000	1071	219.880335	
+2026-11-24	tcE8ThreeRobots@4zones	10000	1	0	10000	1906	249.2932078	
+2026-11-24	tcHeadOnV1	100000	1	0	100000	30	1007.6789141	
+2026-11-24	tcRandomTasks	100000	1	0	100000	2962	2256.5250766	
+2026-11-24	tcHumanAdaptation	100000	1	0	100000	540	2443.898076	
